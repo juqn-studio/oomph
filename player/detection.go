@@ -92,7 +92,7 @@ func (p *Player) FailDetection(d Detection, extraData *orderedmap.OrderedMap[str
 		p.Log().Warn(fmt.Sprintf("%s flagged %s (%s) <x%.2f> %s", p.IdentityDat.DisplayName, d.Type(), d.SubType(), game.Round64(m.Violations, 2), extraDatString))
 	}
 
-	if d.Punishable() && m.Violations >= m.MaxViolations {
+	if !oconfig.Global.UseLegacyEvents && d.Punishable() && m.Violations >= m.MaxViolations {
 		ctx = event.C(p)
 		message := DefaultDetectionDisconnectMessage
 		p.EventHandler().HandlePunishment(ctx, d, &message)
